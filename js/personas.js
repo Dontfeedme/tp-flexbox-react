@@ -1,7 +1,8 @@
 /* ============================================================
    personas.js — Lógica del Ejercicio 2 (JavaScript común)
-   Por ahora: lectura del formulario y validación básica.
-   La tabla y el cálculo de IMC se agregan en pasos siguientes.
+   - Lee el formulario y valida los datos.
+   - Agrega cada persona a una tabla manipulando el DOM.
+   El cálculo de IMC y el botón de quitar se agregan en el paso final.
    ============================================================ */
 
 // Referencias a los elementos del DOM que vamos a usar.
@@ -12,6 +13,10 @@ const inputEdad = document.getElementById("edad");
 const inputAltura = document.getElementById("altura");
 const inputPeso = document.getElementById("peso");
 const mensajeError = document.getElementById("mensajeError");
+const cuerpoTabla = document.getElementById("cuerpoTabla");
+
+// Arreglo que mantiene en memoria todas las personas cargadas.
+const personas = [];
 
 /**
  * Valida los datos del formulario.
@@ -36,8 +41,40 @@ function validar(datos) {
 }
 
 /**
+ * Vuelve a dibujar toda la tabla a partir del arreglo "personas".
+ * Limpia el <tbody> y crea una fila por cada persona.
+ */
+function renderizarTabla() {
+  cuerpoTabla.innerHTML = ""; // borra las filas actuales
+
+  // Si no hay personas, mostramos una fila informativa.
+  if (personas.length === 0) {
+    const filaVacia = document.createElement("tr");
+    filaVacia.className = "vacio";
+    filaVacia.innerHTML = '<td colspan="7">Todavía no hay personas cargadas.</td>';
+    cuerpoTabla.appendChild(filaVacia);
+    return;
+  }
+
+  // Creamos una fila por cada persona del arreglo.
+  personas.forEach(function (persona) {
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td>${persona.nombre}</td>
+      <td>${persona.apellido}</td>
+      <td>${persona.edad}</td>
+      <td>${persona.altura}</td>
+      <td>${persona.peso}</td>
+      <td>-</td>
+      <td>-</td>
+    `;
+    cuerpoTabla.appendChild(fila);
+  });
+}
+
+/**
  * Maneja el envío del formulario: lee los campos, valida
- * y (en pasos posteriores) agrega la persona a la tabla.
+ * y agrega la persona a la tabla.
  */
 form.addEventListener("submit", function (evento) {
   evento.preventDefault(); // evita que la página se recargue
@@ -61,7 +98,14 @@ form.addEventListener("submit", function (evento) {
   // Si todo está bien, limpiamos el mensaje de error.
   mensajeError.textContent = "";
 
-  // (Próximo paso) agregar la persona a la tabla.
+  // Agregamos la persona al arreglo y redibujamos la tabla.
+  personas.push(datos);
+  renderizarTabla();
+
+  // Limpiamos el formulario y dejamos el foco listo para la próxima carga.
   form.reset();
   inputNombre.focus();
 });
+
+// Render inicial: muestra la fila de "tabla vacía" al cargar la página.
+renderizarTabla();
