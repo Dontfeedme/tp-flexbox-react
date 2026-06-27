@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TP Flexbox y React — Inicio</title>
+  <!-- Hoja de estilos compartida por todas las páginas -->
+  <link rel="stylesheet" href="css/estilos.css" />
+  <style>
+    /* Estilos propios de la página de inicio */
+
+    /* Lista de tarjetas de navegación organizada con Flexbox */
+    .menu {
+      display: flex;
+      flex-wrap: wrap;          /* permite que las tarjetas bajen de fila */
+      gap: 20px;
+      justify-content: center;  /* centra las tarjetas horizontalmente */
+      margin-top: 30px;
+    }
+
+    /* Cada tarjeta-enlace a un ejercicio */
+    .menu__item {
+      flex: 1 1 260px;          /* base de 260px, crecen y se encogen */
+      max-width: 320px;
+      background-color: var(--color-superficie);
+      border-radius: var(--radio);
+      box-shadow: var(--sombra);
+      padding: 24px;
+      text-decoration: none;
+      color: var(--color-texto);
+      border-top: 4px solid var(--color-primario);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .menu__item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
+    }
+
+    .menu__item h2 {
+      color: var(--color-primario-oscuro);
+      margin-bottom: 8px;
+      font-size: 1.2rem;
+    }
+
+    .menu__item p {
+      color: var(--color-texto-suave);
+      font-size: 0.95rem;
+    }
+
+    /* Número grande decorativo de cada ejercicio */
+    .menu__numero {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--color-acento);
+      margin-bottom: 6px;
+    }
+
+    .intro {
+      text-align: center;
+      color: var(--color-texto-suave);
+      margin-top: 26px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Encabezado principal del trabajo práctico -->
+  <header class="encabezado">
+    <h1>Trabajo Práctico: Flexbox, Formularios y React</h1>
+    <p>Sitio estático con tres ejercicios enlazados entre sí</p>
+  </header>
+
+  <main class="contenedor">
+    <p class="intro">
+      Elegí un ejercicio para verlo. Cada página tiene su propio enlace de regreso a este inicio.
+    </p>
+
+    <!-- Menú de navegación a los tres ejercicios, maquetado con Flexbox -->
+    <nav class="menu">
+      <a class="menu__item" href="flexbox.html">
+        <span class="menu__numero">Ejercicio 1</span>
+        <h2>Flexbox</h2>
+        <p>Tarjetas generadas dinámicamente y organizadas con <code>display:flex</code>,
+           con un botón que cambia el orden y resalta elementos.</p>
+      </a>
+
+      <a class="menu__item" href="personas.html">
+        <span class="menu__numero">Ejercicio 2</span>
+        <h2>Formulario de Personas</h2>
+        <p>Carga de personas en una tabla con cálculo de IMC, usando JavaScript común
+           y manipulación directa del DOM.</p>
+      </a>
+
+      <a class="menu__item" href="react.html">
+        <span class="menu__numero">Ejercicio 3</span>
+        <h2>Personas con React</h2>
+        <p>La misma funcionalidad del Ejercicio 2 pero implementada con React,
+           cargado por CDN junto con Babel.</p>
+      </a>
+    </nav>
+  </main>
+</body>
+</html>
