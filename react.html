@@ -103,6 +103,20 @@
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <!-- Babel standalone: permite escribir JSX directo en el navegador, sin build -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!--
+    Registramos un preset propio de React con el runtime "classic".
+    Las versiones nuevas de Babel usan por defecto el runtime "automatic",
+    que genera "import ... from 'react/jsx-runtime'". Como esta página NO es
+    un módulo y React se carga por CDN como variable global, ese import falla
+    ("Cannot use import statement outside a module") y la app no se renderiza.
+    Con el runtime classic, el JSX se compila a React.createElement(...),
+    que sí funciona con el React global del CDN.
+  -->
+  <script>
+    Babel.registerPreset("react-classic", {
+      presets: [[Babel.availablePresets["react"], { runtime: "classic" }]]
+    });
+  </script>
 </head>
 <body>
   <header class="encabezado">
@@ -117,8 +131,9 @@
     <a class="volver" href="index.html">&larr; Volver al inicio</a>
   </main>
 
-  <!-- type="text/babel" hace que Babel transforme el JSX antes de ejecutarlo -->
-  <script type="text/babel">
+  <!-- type="text/babel" hace que Babel transforme el JSX antes de ejecutarlo.
+       data-presets="react-classic" usa el preset que registramos arriba. -->
+  <script type="text/babel" data-presets="react-classic">
     const { useState } = React;
 
     /**
