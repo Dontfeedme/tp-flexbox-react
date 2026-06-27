@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ejercicio 2 — Personas (JavaScript)</title>
+  <!-- Estilos compartidos -->
+  <link rel="stylesheet" href="css/estilos.css" />
+  <style>
+    /* ===== Estilos propios del Ejercicio 2 ===== */
+
+    /* Formulario maquetado con Flexbox para alinear los campos */
+    .formulario {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: flex-end;
+    }
+
+    /* Cada campo (label + input) apilado en columna */
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1 1 140px;
+    }
+
+    .campo label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-texto-suave);
+    }
+
+    .campo input {
+      padding: 9px 10px;
+      border: 1px solid var(--color-borde);
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .campo input:focus {
+      outline: 2px solid var(--color-primario);
+      border-color: var(--color-primario);
+    }
+
+    /* Mensaje de error de validación */
+    .error {
+      color: #c62828;
+      font-size: 0.9rem;
+      margin-top: 12px;
+      min-height: 1.2em; /* reserva espacio para que no salte el layout */
+    }
+
+    /* ----- Tabla de personas ----- */
+    .tabla {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    .tabla th,
+    .tabla td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--color-borde);
+    }
+
+    .tabla th {
+      background-color: #eef1f8;
+      color: var(--color-primario-oscuro);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .tabla tbody tr:hover {
+      background-color: #f7f9fd;
+    }
+
+    /* Fila que se muestra cuando todavía no hay personas cargadas */
+    .vacio td {
+      text-align: center;
+      color: var(--color-texto-suave);
+      font-style: italic;
+    }
+
+    /* Botón pequeño para quitar una fila */
+    .boton-quitar {
+      background-color: #ef5350;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .boton-quitar:hover {
+      background-color: #e53935;
+    }
+  </style>
+</head>
+<body>
+  <header class="encabezado">
+    <h1>Ejercicio 2 — Personas</h1>
+    <p>Formulario y tabla con cálculo de IMC usando JavaScript común</p>
+  </header>
+
+  <main class="contenedor">
+    <!-- Panel del formulario de carga -->
+    <section class="panel">
+      <h2 style="color: var(--color-primario-oscuro); margin-bottom: 16px;">
+        Cargar persona
+      </h2>
+
+      <!-- Formulario con los 5 campos pedidos -->
+      <form id="formPersona" class="formulario" novalidate>
+        <div class="campo">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" placeholder="Juan" />
+        </div>
+        <div class="campo">
+          <label for="apellido">Apellido</label>
+          <input type="text" id="apellido" placeholder="Pérez" />
+        </div>
+        <div class="campo">
+          <label for="edad">Edad</label>
+          <input type="number" id="edad" placeholder="30" min="0" />
+        </div>
+        <div class="campo">
+          <label for="altura">Altura (m)</label>
+          <input type="number" id="altura" placeholder="1.75" step="0.01" min="0" />
+        </div>
+        <div class="campo">
+          <label for="peso">Peso (kg)</label>
+          <input type="number" id="peso" placeholder="70" step="0.1" min="0" />
+        </div>
+        <div class="campo" style="flex: 0 0 auto;">
+          <button type="submit" class="boton">Agregar</button>
+        </div>
+      </form>
+
+      <!-- Zona donde se muestran los mensajes de validación -->
+      <p id="mensajeError" class="error"></p>
+    </section>
+
+    <!-- Panel de la tabla de personas cargadas -->
+    <section class="panel">
+      <h2 style="color: var(--color-primario-oscuro); margin-bottom: 16px;">
+        Personas cargadas
+      </h2>
+
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Edad</th>
+            <th>Altura (m)</th>
+            <th>Peso (kg)</th>
+            <th>IMC</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <!-- JS inyecta aquí las filas de personas -->
+        <tbody id="cuerpoTabla"></tbody>
+      </table>
+    </section>
+
+    <a class="volver" href="index.html">&larr; Volver al inicio</a>
+  </main>
+
+  <!-- Lógica del ejercicio -->
+  <script src="js/personas.js"></script>
+</body>
+</html>
