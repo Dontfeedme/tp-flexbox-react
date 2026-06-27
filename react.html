@@ -122,6 +122,14 @@
     const { useState } = React;
 
     /**
+     * Calcula el IMC: peso / (altura * altura), redondeado a 1 decimal.
+     * Es una función auxiliar pura, fuera de los componentes.
+     */
+    function calcularImc(peso, altura) {
+      return (peso / (altura * altura)).toFixed(1);
+    }
+
+    /**
      * Formulario de carga de una persona.
      * Es un componente "controlado": cada input guarda su valor en el estado.
      * Cuando se envía, valida y avisa al padre mediante la prop onAgregar.
@@ -249,7 +257,7 @@
      * Tabla que muestra todas las personas recibidas por props.
      * Si no hay personas, muestra una fila informativa.
      */
-    function TablaPersonas({ personas }) {
+    function TablaPersonas({ personas, onQuitar }) {
       return (
         <section className="panel">
           <h2 style={{ color: "var(--color-primario-oscuro)", marginBottom: "16px" }}>
@@ -264,12 +272,14 @@
                 <th>Edad</th>
                 <th>Altura (m)</th>
                 <th>Peso (kg)</th>
+                <th>IMC</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {personas.length === 0 ? (
                 <tr className="vacio">
-                  <td colSpan="5">Todavía no hay personas cargadas.</td>
+                  <td colSpan="7">Todavía no hay personas cargadas.</td>
                 </tr>
               ) : (
                 personas.map((persona) => (
@@ -279,6 +289,16 @@
                     <td>{persona.edad}</td>
                     <td>{persona.altura}</td>
                     <td>{persona.peso}</td>
+                    {/* El IMC se calcula al vuelo a partir de peso y altura */}
+                    <td>{calcularImc(persona.peso, persona.altura)}</td>
+                    <td>
+                      <button
+                        className="boton-quitar"
+                        onClick={() => onQuitar(persona.id)}
+                      >
+                        Quitar
+                      </button>
+                    </td>
                   </tr>
                 ))
               )}
@@ -305,10 +325,16 @@
         setProximoId(proximoId + 1);
       }
 
+      // Quita del estado la persona cuyo id coincide.
+      // Usamos filter para crear un arreglo nuevo sin esa persona.
+      function quitarPersona(id) {
+        setPersonas(personas.filter((p) => p.id !== id));
+      }
+
       return (
         <React.Fragment>
           <FormularioPersona onAgregar={agregarPersona} />
-          <TablaPersonas personas={personas} />
+          <TablaPersonas personas={personas} onQuitar={quitarPersona} />
         </React.Fragment>
       );
     }
