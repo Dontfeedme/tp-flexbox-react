@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ejercicio 3 — Personas (React)</title>
+  <!-- Estilos compartidos -->
+  <link rel="stylesheet" href="css/estilos.css" />
+  <style>
+    /* ===== Estilos propios del Ejercicio 3 =====
+       Reutilizan las mismas clases visuales que el Ejercicio 2
+       para que ambas páginas se vean igual. ===== */
+
+    .formulario {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: flex-end;
+    }
+
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1 1 140px;
+    }
+
+    .campo label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-texto-suave);
+    }
+
+    .campo input {
+      padding: 9px 10px;
+      border: 1px solid var(--color-borde);
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .campo input:focus {
+      outline: 2px solid var(--color-primario);
+      border-color: var(--color-primario);
+    }
+
+    .error {
+      color: #c62828;
+      font-size: 0.9rem;
+      margin-top: 12px;
+      min-height: 1.2em;
+    }
+
+    .tabla {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    .tabla th,
+    .tabla td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--color-borde);
+    }
+
+    .tabla th {
+      background-color: #eef1f8;
+      color: var(--color-primario-oscuro);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .tabla tbody tr:hover {
+      background-color: #f7f9fd;
+    }
+
+    .vacio td {
+      text-align: center;
+      color: var(--color-texto-suave);
+      font-style: italic;
+    }
+
+    .boton-quitar {
+      background-color: #ef5350;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .boton-quitar:hover {
+      background-color: #e53935;
+    }
+  </style>
+
+  <!-- ===== Carga de React por CDN ===== -->
+  <!-- React: librería principal -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <!-- ReactDOM: se encarga de renderizar en el navegador -->
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <!-- Babel standalone: permite escribir JSX directo en el navegador, sin build -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <header class="encabezado">
+    <h1>Ejercicio 3 — Personas con React</h1>
+    <p>Misma funcionalidad del Ejercicio 2, ahora con componentes y estado de React</p>
+  </header>
+
+  <!-- React monta toda la aplicación dentro de este contenedor -->
+  <main class="contenedor">
+    <div id="raiz"></div>
+
+    <a class="volver" href="index.html">&larr; Volver al inicio</a>
+  </main>
+
+  <!-- type="text/babel" hace que Babel transforme el JSX antes de ejecutarlo -->
+  <script type="text/babel">
+    const { useState } = React;
+
+    /**
+     * Componente principal de la aplicación.
+     * En este primer paso solo renderiza un panel de prueba;
+     * el formulario y la tabla se agregan en los siguientes commits.
+     */
+    function App() {
+      return (
+        <section className="panel">
+          <h2 style={{ color: "var(--color-primario-oscuro)" }}>
+            Aplicación de Personas (React)
+          </h2>
+          <p>React, ReactDOM y Babel cargados correctamente.</p>
+        </section>
+      );
+    }
+
+    // Creamos la raíz de React 18 y montamos el componente App.
+    const raiz = ReactDOM.createRoot(document.getElementById("raiz"));
+    raiz.render(<App />);
+  </script>
+</body>
+</html>
