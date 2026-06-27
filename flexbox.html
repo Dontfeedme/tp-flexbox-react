@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ejercicio 1 — Flexbox</title>
+  <!-- Estilos compartidos -->
+  <link rel="stylesheet" href="css/estilos.css" />
+  <style>
+    /* ===== Estilos propios del Ejercicio 1 (Flexbox) ===== */
+
+    /* Barra de controles: alineada con Flexbox, separa título y botones */
+    .controles {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between; /* distribuye el espacio entre extremos */
+      gap: 12px;
+    }
+
+    .controles h2 {
+      color: var(--color-primario-oscuro);
+    }
+
+    .controles__botones {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ----- Contenedor flex principal de las tarjetas ----- */
+    /* Aquí se demuestra alineación, distribución y flex-wrap */
+    .tarjetas {
+      display: flex;          /* activa Flexbox */
+      flex-wrap: wrap;        /* las tarjetas pasan a la fila siguiente si no entran */
+      gap: 18px;              /* separación uniforme entre tarjetas */
+      align-items: stretch;   /* todas las tarjetas toman la misma altura */
+      justify-content: flex-start;
+      margin-top: 22px;
+    }
+
+    /* ----- Cada tarjeta es a su vez un contenedor flex en columna ----- */
+    .tarjeta {
+      flex: 1 1 220px;        /* crecen/encogen desde una base de 220px */
+      max-width: 260px;
+      display: flex;
+      flex-direction: column; /* contenido apilado verticalmente */
+      background-color: var(--color-superficie);
+      border-radius: var(--radio);
+      box-shadow: var(--sombra);
+      overflow: hidden;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .tarjeta:hover {
+      transform: translateY(-4px);
+    }
+
+    /* Franja de color superior con la inicial / emoji de la fruta */
+    .tarjeta__cabecera {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 90px;
+      font-size: 2.4rem;
+      color: #fff;
+    }
+
+    .tarjeta__cuerpo {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1; /* empuja el precio hacia abajo ocupando el espacio sobrante */
+    }
+
+    .tarjeta__nombre {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--color-texto);
+    }
+
+    .tarjeta__categoria {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-texto-suave);
+    }
+
+    .tarjeta__precio {
+      margin-top: auto;        /* se alinea al fondo de la tarjeta */
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-primario);
+    }
+
+    /* Clase que resalta una tarjeta cuando se activa el filtro */
+    .tarjeta--resaltada {
+      outline: 3px solid var(--color-acento);
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    /* Cuando el filtro está activo, las no resaltadas se atenúan */
+    .tarjeta--atenuada {
+      opacity: 0.35;
+    }
+  </style>
+</head>
+<body>
+  <header class="encabezado">
+    <h1>Ejercicio 1 — Flexbox</h1>
+    <p>Tarjetas generadas dinámicamente y organizadas con <code>display:flex</code></p>
+  </header>
+
+  <main class="contenedor">
+    <section class="panel">
+      <!-- Barra de controles con título y botones de acción -->
+      <div class="controles">
+        <h2>Catálogo de frutas</h2>
+        <div class="controles__botones">
+          <button id="btnOrdenar" class="boton" type="button">
+            Ordenar por precio
+          </button>
+          <button id="btnResaltar" class="boton boton--acento" type="button">
+            Resaltar económicas
+          </button>
+        </div>
+      </div>
+
+      <!-- Contenedor flex donde JS inyecta las tarjetas -->
+      <div id="tarjetas" class="tarjetas"></div>
+    </section>
+
+    <a class="volver" href="index.html">&larr; Volver al inicio</a>
+  </main>
+
+  <!-- Lógica del ejercicio: generación de tarjetas y acciones de los botones -->
+  <script src="js/flexbox.js"></script>
+</body>
+</html>
