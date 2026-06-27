@@ -18,6 +18,31 @@ const cuerpoTabla = document.getElementById("cuerpoTabla");
 // Arreglo que mantiene en memoria todas las personas cargadas.
 const personas = [];
 
+// Contador para asignar un id único a cada persona (sirve para quitarla luego).
+let proximoId = 1;
+
+/**
+ * Calcula el Índice de Masa Corporal: peso / (altura * altura).
+ * Devuelve el resultado redondeado a 1 decimal.
+ */
+function calcularImc(peso, altura) {
+  const imc = peso / (altura * altura);
+  return imc.toFixed(1); // string con 1 decimal, ej: "22.9"
+}
+
+/**
+ * Quita del arreglo la persona cuyo id coincide y redibuja la tabla.
+ */
+function quitarPersona(id) {
+  const indice = personas.findIndex(function (p) {
+    return p.id === id;
+  });
+  if (indice !== -1) {
+    personas.splice(indice, 1); // elimina 1 elemento en esa posición
+    renderizarTabla();
+  }
+}
+
 /**
  * Valida los datos del formulario.
  * Devuelve un texto de error si algo está mal, o "" si todo es válido.
@@ -59,15 +84,32 @@ function renderizarTabla() {
   // Creamos una fila por cada persona del arreglo.
   personas.forEach(function (persona) {
     const fila = document.createElement("tr");
+
+    // Calculamos el IMC de esta persona para mostrarlo en su columna.
+    const imc = calcularImc(persona.peso, persona.altura);
+
     fila.innerHTML = `
       <td>${persona.nombre}</td>
       <td>${persona.apellido}</td>
       <td>${persona.edad}</td>
       <td>${persona.altura}</td>
       <td>${persona.peso}</td>
-      <td>-</td>
-      <td>-</td>
+      <td>${imc}</td>
+      <td></td>
     `;
+
+    // Botón para quitar esta fila. Se crea aparte para enlazarle el evento
+    // con el id de la persona (evita problemas con onclick en el HTML).
+    const botonQuitar = document.createElement("button");
+    botonQuitar.className = "boton-quitar";
+    botonQuitar.textContent = "Quitar";
+    botonQuitar.addEventListener("click", function () {
+      quitarPersona(persona.id);
+    });
+
+    // Insertamos el botón en la última celda (la de "Acciones").
+    fila.lastElementChild.appendChild(botonQuitar);
+
     cuerpoTabla.appendChild(fila);
   });
 }
@@ -97,6 +139,10 @@ form.addEventListener("submit", function (evento) {
 
   // Si todo está bien, limpiamos el mensaje de error.
   mensajeError.textContent = "";
+
+  // Le asignamos un id único antes de guardarla (sirve para quitarla después).
+  datos.id = proximoId;
+  proximoId = proximoId + 1;
 
   // Agregamos la persona al arreglo y redibujamos la tabla.
   personas.push(datos);
