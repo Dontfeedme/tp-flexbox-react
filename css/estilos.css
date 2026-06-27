@@ -1,0 +1,113 @@
+/* ============================================================
+   estilos.css — Hoja de estilos compartida por todas las páginas
+   del TP (index, flexbox, personas y react).
+   CSS propio, sin frameworks ni librerías externas.
+   ============================================================ */
+
+/* Variables de color para mantener una paleta consistente */
+:root {
+  --color-fondo: #f4f6fb;
+  --color-superficie: #ffffff;
+  --color-primario: #3949ab;
+  --color-primario-oscuro: #283593;
+  --color-acento: #ff7043;
+  --color-texto: #1f2933;
+  --color-texto-suave: #52606d;
+  --color-borde: #d7dce5;
+  --sombra: 0 4px 14px rgba(0, 0, 0, 0.08);
+  --radio: 10px;
+}
+
+/* Reset básico para que todos los navegadores partan de lo mismo */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Contenedor centrado para limitar el ancho del contenido */
+.contenedor {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+}
+
+/* Encabezado superior de cada página */
+.encabezado {
+  background: linear-gradient(135deg, var(--color-primario), var(--color-primario-oscuro));
+  color: #fff;
+  padding: 28px 20px;
+  text-align: center;
+  box-shadow: var(--sombra);
+}
+
+.encabezado h1 {
+  font-size: 1.8rem;
+  margin-bottom: 6px;
+}
+
+.encabezado p {
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+/* Estilo base para los botones de la app */
+.boton {
+  display: inline-block;
+  background-color: var(--color-primario);
+  color: #fff;
+  border: none;
+  border-radius: var(--radio);
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.boton:hover {
+  background-color: var(--color-primario-oscuro);
+}
+
+.boton:active {
+  transform: translatey(1px);
+}
+
+/* Variante de botón con color de acento */
+.boton--acento {
+  background-color: var(--color-acento);
+}
+
+.boton--acento:hover {
+  background-color: #f4511e;
+}
+
+/* Enlace de regreso a la página principal */
+.volver {
+  display: inline-block;
+  margin-top: 24px;
+  color: var(--color-primario);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.volver:hover {
+  text-decoration: underline;
+}
+
+/* Tarjeta genérica de superficie blanca con sombra */
+.panel {
+  background-color: var(--color-superficie);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 22px;
+  margin-top: 24px;
+}
