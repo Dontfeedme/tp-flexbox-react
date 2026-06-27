@@ -122,18 +122,194 @@
     const { useState } = React;
 
     /**
-     * Componente principal de la aplicación.
-     * En este primer paso solo renderiza un panel de prueba;
-     * el formulario y la tabla se agregan en los siguientes commits.
+     * Formulario de carga de una persona.
+     * Es un componente "controlado": cada input guarda su valor en el estado.
+     * Cuando se envía, valida y avisa al padre mediante la prop onAgregar.
      */
-    function App() {
+    function FormularioPersona({ onAgregar }) {
+      // Un estado por cada campo del formulario.
+      const [nombre, setNombre] = useState("");
+      const [apellido, setApellido] = useState("");
+      const [edad, setEdad] = useState("");
+      const [altura, setAltura] = useState("");
+      const [peso, setPeso] = useState("");
+      // Estado para el mensaje de validación.
+      const [error, setError] = useState("");
+
+      // Maneja el envío del formulario.
+      function manejarEnvio(evento) {
+        evento.preventDefault(); // evita recargar la página
+
+        // Convertimos los textos a números para validar y guardar.
+        const persona = {
+          nombre: nombre.trim(),
+          apellido: apellido.trim(),
+          edad: parseInt(edad, 10),
+          altura: parseFloat(altura),
+          peso: parseFloat(peso)
+        };
+
+        // Validación básica: nada vacío y números mayores a cero.
+        if (persona.nombre === "" || persona.apellido === "") {
+          setError("El nombre y el apellido son obligatorios.");
+          return;
+        }
+        if (isNaN(persona.edad) || persona.edad <= 0) {
+          setError("La edad debe ser un número mayor a cero.");
+          return;
+        }
+        if (isNaN(persona.altura) || persona.altura <= 0) {
+          setError("La altura debe ser un número mayor a cero (en metros).");
+          return;
+        }
+        if (isNaN(persona.peso) || persona.peso <= 0) {
+          setError("El peso debe ser un número mayor a cero (en kg).");
+          return;
+        }
+
+        // Todo válido: avisamos al padre y limpiamos el formulario.
+        onAgregar(persona);
+        setError("");
+        setNombre("");
+        setApellido("");
+        setEdad("");
+        setAltura("");
+        setPeso("");
+      }
+
       return (
         <section className="panel">
-          <h2 style={{ color: "var(--color-primario-oscuro)" }}>
-            Aplicación de Personas (React)
+          <h2 style={{ color: "var(--color-primario-oscuro)", marginBottom: "16px" }}>
+            Cargar persona
           </h2>
-          <p>React, ReactDOM y Babel cargados correctamente.</p>
+
+          <form className="formulario" onSubmit={manejarEnvio}>
+            <div className="campo">
+              <label>Nombre</label>
+              <input
+                type="text"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                placeholder="Juan"
+              />
+            </div>
+            <div className="campo">
+              <label>Apellido</label>
+              <input
+                type="text"
+                value={apellido}
+                onChange={(e) => setApellido(e.target.value)}
+                placeholder="Pérez"
+              />
+            </div>
+            <div className="campo">
+              <label>Edad</label>
+              <input
+                type="number"
+                value={edad}
+                onChange={(e) => setEdad(e.target.value)}
+                placeholder="30"
+                min="0"
+              />
+            </div>
+            <div className="campo">
+              <label>Altura (m)</label>
+              <input
+                type="number"
+                value={altura}
+                onChange={(e) => setAltura(e.target.value)}
+                placeholder="1.75"
+                step="0.01"
+                min="0"
+              />
+            </div>
+            <div className="campo">
+              <label>Peso (kg)</label>
+              <input
+                type="number"
+                value={peso}
+                onChange={(e) => setPeso(e.target.value)}
+                placeholder="70"
+                step="0.1"
+                min="0"
+              />
+            </div>
+            <div className="campo" style={{ flex: "0 0 auto" }}>
+              <button type="submit" className="boton">Agregar</button>
+            </div>
+          </form>
+
+          {/* El mensaje de error solo aparece si hay texto en el estado */}
+          <p className="error">{error}</p>
         </section>
+      );
+    }
+
+    /**
+     * Tabla que muestra todas las personas recibidas por props.
+     * Si no hay personas, muestra una fila informativa.
+     */
+    function TablaPersonas({ personas }) {
+      return (
+        <section className="panel">
+          <h2 style={{ color: "var(--color-primario-oscuro)", marginBottom: "16px" }}>
+            Personas cargadas
+          </h2>
+
+          <table className="tabla">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Edad</th>
+                <th>Altura (m)</th>
+                <th>Peso (kg)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {personas.length === 0 ? (
+                <tr className="vacio">
+                  <td colSpan="5">Todavía no hay personas cargadas.</td>
+                </tr>
+              ) : (
+                personas.map((persona) => (
+                  <tr key={persona.id}>
+                    <td>{persona.nombre}</td>
+                    <td>{persona.apellido}</td>
+                    <td>{persona.edad}</td>
+                    <td>{persona.altura}</td>
+                    <td>{persona.peso}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </section>
+      );
+    }
+
+    /**
+     * Componente principal: mantiene el listado de personas en su estado
+     * y conecta el formulario con la tabla.
+     */
+    function App() {
+      // Estado con todas las personas cargadas.
+      const [personas, setPersonas] = useState([]);
+      // Contador de id para identificar cada persona.
+      const [proximoId, setProximoId] = useState(1);
+
+      // Agrega una persona nueva al estado (la recibe del formulario).
+      function agregarPersona(persona) {
+        const nueva = { ...persona, id: proximoId };
+        setPersonas([...personas, nueva]);
+        setProximoId(proximoId + 1);
+      }
+
+      return (
+        <React.Fragment>
+          <FormularioPersona onAgregar={agregarPersona} />
+          <TablaPersonas personas={personas} />
+        </React.Fragment>
       );
     }
 
